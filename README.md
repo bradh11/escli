@@ -45,28 +45,89 @@ That's it. You don't need Python, Node or anything else installed.
 
 ## Installation
 
-### Download a release
+Pick your operating system:
 
-Download the archive for your platform from the
-[releases page](https://github.com/bradh11/escli/releases), extract it and
-put `escli` on your `PATH`:
+<details open>
+<summary><strong>macOS</strong></summary>
+
+<br>
+
+Download the latest release and put it on your `PATH`:
 
 ```console
-$ tar -xzf escli_*_darwin_arm64.tar.gz
+$ curl -sSL https://github.com/bradh11/escli/releases/latest/download/escli_darwin_arm64.tar.gz | tar -xz escli
 $ sudo mv escli /usr/local/bin/
 ```
 
+That's for Apple silicon (M1 and later). On an Intel Mac, use
+`escli_darwin_amd64.tar.gz` instead.
+
 > [!TIP]
-> On macOS, your browser quarantines downloaded files, and Gatekeeper blocks
-> the unsigned binary. Remove the quarantine flag once:
+> If you download the archive with a **browser** instead, macOS quarantines
+> it, and Gatekeeper blocks the unsigned binary. Remove the quarantine flag
+> once:
 >
 > ```console
 > $ xattr -d com.apple.quarantine /usr/local/bin/escli
 > ```
 
+</details>
+
+<details>
+<summary><strong>Linux</strong></summary>
+
+<br>
+
+Download the latest release and put it on your `PATH`:
+
+```console
+$ curl -sSL https://github.com/bradh11/escli/releases/latest/download/escli_linux_amd64.tar.gz | tar -xz escli
+$ sudo install escli /usr/local/bin/
+```
+
+On ARM (for example a Raspberry Pi or AWS Graviton), use
+`escli_linux_arm64.tar.gz` instead.
+
 > [!NOTE]
-> Each release has a `checksums.txt` file. You can verify your download with
-> `shasum -a 256 -c checksums.txt --ignore-missing`.
+> escli stores your API key with the Secret Service (GNOME Keyring or
+> KWallet). On a server or container without one, it falls back to a file
+> that only you can read. See [Where things are stored](#where-things-are-stored).
+
+</details>
+
+<details>
+<summary><strong>Windows</strong></summary>
+
+<br>
+
+In PowerShell, download the latest release and extract it:
+
+```powershell
+Invoke-WebRequest https://github.com/bradh11/escli/releases/latest/download/escli_windows_amd64.zip -OutFile escli.zip
+Expand-Archive escli.zip -DestinationPath "$env:LOCALAPPDATA\Programs\escli" -Force
+```
+
+Then add that folder to your `PATH`:
+
+```powershell
+$userPath = [Environment]::GetEnvironmentVariable("Path", "User")
+[Environment]::SetEnvironmentVariable("Path", "$userPath;$env:LOCALAPPDATA\Programs\escli", "User")
+```
+
+Open a **new** terminal, so that it picks up the new `PATH`, and check it:
+
+```powershell
+escli version
+```
+
+On Windows on ARM, use `escli_windows_arm64.zip` instead.
+
+</details>
+
+> [!NOTE]
+> Every release also has a `checksums.txt` file, so you can verify your
+> download. You can also pick any version from the
+> [releases page](https://github.com/bradh11/escli/releases).
 
 ### With Go
 
