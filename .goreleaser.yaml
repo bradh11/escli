@@ -1,0 +1,63 @@
+# GoReleaser builds a static binary for each platform and publishes them to a
+# GitHub release when a v* tag is pushed. Try it locally with `make snapshot`.
+version: 2
+
+project_name: escli
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: escli
+    main: ./cmd/escli
+    binary: escli
+    env:
+      - CGO_ENABLED=0
+    goos: [darwin, linux, windows]
+    goarch: [amd64, arm64]
+    flags: [-trimpath]
+    ldflags:
+      - -s -w
+      - -X github.com/bradh11/escli/internal/version.Version={{ .Version }}
+      - -X github.com/bradh11/escli/internal/version.Commit={{ .ShortCommit }}
+      - -X github.com/bradh11/escli/internal/version.Date={{ .Date }}
+    mod_timestamp: "{{ .CommitTimestamp }}"
+
+archives:
+  - formats: [tar.gz]
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    files:
+      - README.md
+      - LICENSE
+
+checksum:
+  name_template: checksums.txt
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^chore:"
+
+# To offer `brew install`, create a tap repository (for example
+# bradh11/homebrew-tap), add a token with write access to it as the
+# HOMEBREW_TAP_TOKEN secret, and uncomment this block.
+# homebrew_casks:
+#   - repository:
+#       owner: bradh11
+#       name: homebrew-tap
+#       token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+#     homepage: https://github.com/bradh11/escli
+#     description: Read-only Elasticsearch client for people and AI agents
+#     hooks:
+#       post:
+#         install: |
+#           if system_command("/usr/bin/xattr", args: ["-h"]).exit_status == 0
+#             system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/escli"]
+#           end

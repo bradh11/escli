@@ -1,0 +1,105 @@
+# ---------------------------------------------------------------------------
+# Build output
+# ---------------------------------------------------------------------------
+/bin/
+/dist/
+/escli
+/escli.exe
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# ---------------------------------------------------------------------------
+# Go
+# ---------------------------------------------------------------------------
+*.test
+*.out
+*.prof
+*.pprof
+coverage.*
+cover.*
+/vendor/
+go.work
+go.work.sum
+
+# ---------------------------------------------------------------------------
+# Secrets and credentials
+# Never commit API keys, tokens or certificates. escli keeps its own
+# configuration in ~/.config/escli, outside the repository.
+# ---------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.env
+*.env.local
+creds.env
+.envrc
+secrets/
+/config.json
+credentials.json
+credentials*.json
+*.credentials
+secrets.*
+*.secret
+*.secrets
+api_key*
+apikey*
+*.pem
+*.key
+*.crt
+*.cer
+*.p12
+*.pfx
+*.jks
+*.keystore
+id_rsa*
+id_ed25519*
+.netrc
+.npmrc
+.pypirc
+*.kubeconfig
+
+# ---------------------------------------------------------------------------
+# Logs and scratch files
+# ---------------------------------------------------------------------------
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+*~
+/tmp/
+
+# ---------------------------------------------------------------------------
+# Editors and AI tools
+# ---------------------------------------------------------------------------
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.iml
+*.code-workspace
+.claude/settings.local.json
+.claude/*.local.*
+CLAUDE.local.md
+
+# ---------------------------------------------------------------------------
+# Other language tooling caches
+# ---------------------------------------------------------------------------
+.ruff_cache/
+__pycache__/
+.venv/
+node_modules/
+
+# ---------------------------------------------------------------------------
+# Operating systems
+# ---------------------------------------------------------------------------
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
