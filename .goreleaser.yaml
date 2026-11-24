@@ -46,19 +46,25 @@ changelog:
       - "^test:"
       - "^chore:"
 
-# To offer `brew install`, create a tap repository (for example
-# bradh11/homebrew-tap), add a token with write access to it as the
-# HOMEBREW_TAP_TOKEN secret, and uncomment this block.
-# homebrew_casks:
-#   - repository:
-#       owner: bradh11
-#       name: homebrew-tap
-#       token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
-#     homepage: https://github.com/bradh11/escli
-#     description: Read-only Elasticsearch client for people and AI agents
-#     hooks:
-#       post:
-#         install: |
-#           if system_command("/usr/bin/xattr", args: ["-h"]).exit_status == 0
-#             system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/escli"]
-#           end
+# Publishes a cask to bradh11/homebrew-tap, so that `brew install bradh11/tap/escli`
+# works. HOMEBREW_TAP_TOKEN is a token with write access to that repository only.
+homebrew_casks:
+  - repository:
+      owner: bradh11
+      name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+    homepage: https://github.com/bradh11/escli
+    description: Read-only Elasticsearch client for people and AI agents
+    license: MIT
+    commit_author:
+      name: Brad Haas
+      email: bradh11@gmail.com
+    commit_msg_template: "Update escli to {{ .Tag }}"
+    # Homebrew quarantines cask downloads, and Gatekeeper blocks the unsigned
+    # binary, so the cask removes the quarantine flag after install.
+    hooks:
+      post:
+        install_steps: |
+          on_macos do
+            run "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "{{ .StagedPath }}/escli"]
+          end

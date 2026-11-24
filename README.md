@@ -52,7 +52,15 @@ Pick your operating system:
 
 <br>
 
-Download the latest release and put it on your `PATH`:
+The easiest way is [Homebrew](https://brew.sh):
+
+```console
+$ brew install bradh11/tap/escli
+```
+
+To update later, run `brew upgrade escli`. 🍺
+
+Or, without Homebrew, download the latest release and put it on your `PATH`:
 
 ```console
 $ curl -sSL https://github.com/bradh11/escli/releases/latest/download/escli_darwin_arm64.tar.gz | tar -xz escli
